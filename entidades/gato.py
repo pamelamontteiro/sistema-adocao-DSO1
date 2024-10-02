@@ -1,4 +1,4 @@
-from models.animal import Animal
+from entidades.animal import Animal
 
 #importar o historico de vacinação
 

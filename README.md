@@ -1,12 +1,14 @@
 # Projeto de um Sistema de Adoção de Gatos e Cachorros - ONS
 
- <img align="left" height="200" src="gatos.gif">
- 
-     Este projeto foi desenvolvido durante as aulas de Desenvolvimento de Sistemas Orientados a Objetos I (DSO) na Universidade Federal de Santa Catarina (UFSC). O objetivo do sistema é facilitar o processo de adoção de gatos e cachorros.
+
+    Este projeto foi desenvolvido durante as aulas de Desenvolvimento de Sistemas Orientados a Objetos I (DSO) na Universidade Federal de Santa Catarina (UFSC). O objetivo do sistema é facilitar o processo de adoção de gatos e cachorros.
 
     Realizado em parceria por Pamela Monteiro e Thabata.
     Implementação em Python. 🐍
     
+<p 
+ <img height="200" src="gatos.gif">
+ </p>
 <br>
 <br>
 
@@ -56,8 +58,6 @@ Objetivo: Garantir a adoção responsável de animais.
     *   Animal adotado
     *   Adotante
     *   Termo de responsabilidade assinado (Sim ou Não)
-
-    <img align="right" height="100" src="gato-cao-amigos.gif">
 
 - <p><strong> Relatórios </strong>
        
