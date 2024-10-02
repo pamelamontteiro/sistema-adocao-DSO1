@@ -1,10 +1,13 @@
 from entidades.animal import Animal
 
-#importar o historico de vacinação
+# importar o historico de vacinação
 
-class gato:
 
-     #incluir historico de vacinacao no init e super(classe super tmb)
+class Gato(Animal):
 
-    def __init__(self, nome:str, numero_chip:str, raca:str, tamanho:str, castrado:str):
-        super().__init__(numero_chip, nome, raca)
+    # incluir historico de vacinacao no init e super(classe super tmb)
+
+    def __init__(
+        self, numero_chip: str, nome: str,raca: str, tamanho: str, castrado: bool
+    ):
+        super().__init__(numero_chip, nome, raca, tamanho, castrado)
