@@ -1,6 +1,5 @@
 from entidades.animal import Animal
-
-# importar o historico de vacinação
+from entidades.historico_vacinacao import HistoricoVacinacao
 
 class Cachorro(Animal):
 
