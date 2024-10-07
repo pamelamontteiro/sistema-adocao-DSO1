@@ -9,7 +9,7 @@ class RegistroAdocao:
         self.__animal = animal
         self.__adotante = adotante
         self.__termo_assinado = termo_assinado
-        self.__codigo_registro = str(uuid.uuid4())  # Gera um código de registro único
+        self.__id_registro = str(uuid.uuid4())  # Gera um código de registro único
 
     @property
     def id_registro(self):

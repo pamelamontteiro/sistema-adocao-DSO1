@@ -1,9 +1,6 @@
 from entidades.pessoa import Pessoa
 from datetime import date
 
-# tem que fazer uma classe do tipo de casa e importar depois aqui
-
-
 class Adotante(Pessoa):
     # herança da pessoa
     def __init__(self,
