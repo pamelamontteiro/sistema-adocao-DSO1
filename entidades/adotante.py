@@ -1,9 +1,11 @@
 from entidades.pessoa import Pessoa
 from datetime import date
 
+
 class Adotante(Pessoa):
     # herança da pessoa
-    def __init__(self,
+    def __init__(
+        self,
         cpf: str,
         nome: str,
         data_nascimento: date,

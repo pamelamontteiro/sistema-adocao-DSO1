@@ -57,7 +57,9 @@ class Sistema:
                     return False
 
             # Se todas as condições forem atendidas, permite a adoção
-            self.__registro_adocoes.append(RegistroAdocao(data_adocao, animal, adotante, termo_assinado))  # Mudança de nome aqui
+            self.__registro_adocoes.append(
+                RegistroAdocao(data_adocao, animal, adotante, termo_assinado)
+            )  # Mudança de nome aqui
             print("Adoção registrada com sucesso.")
             return True
         else:
@@ -68,9 +70,16 @@ class Sistema:
 def main():
     gato = Gato("123", "Pandora", "Siamex", "pequeno", True)
     print(gato.nome)
-    adotante = Adotante("4567", "Italo", date.fromisoformat('1990-10-30'), "Rua Lauro Linhares", "apartamento", True)
+    adotante = Adotante(
+        "4567",
+        "Italo",
+        date.fromisoformat("1990-10-30"),
+        "Rua Lauro Linhares",
+        "apartamento",
+        True,
+    )
     print(adotante.nome)
-    registro = RegistroAdocao( date.fromisoformat('2024-10-30'), gato, adotante, True)
+    registro = RegistroAdocao(date.fromisoformat("2024-10-30"), gato, adotante, True)
     print(registro.adotante.nome)
 
 

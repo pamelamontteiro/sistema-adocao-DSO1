@@ -71,16 +71,10 @@ Objetivo: Garantir a adoção responsável de animais.
 ## DIAGRAMA UML
 
 
-<img src="DIAGRAMA.jpeg">
+<!-- <img src="DIAGRAMA.jpeg"> -->
 
 
 ## Relacionamentos
-
-*   Animal tem um HistoricoVacina (1 para N)
-*   Doador está relacionado a Doacao (1 para N)
-*   Animal está relacionado a Doacao (1 para 1)
-*   Adotante está relacionado a Adoção (1 para N)
-*   Animal está relacionado a Adoção (1 para 1)
 
 
 

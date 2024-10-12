@@ -3,8 +3,15 @@ from entidades.animal import Animal
 from datetime import datetime
 import uuid
 
+
 class RegistroAdocao:
-    def __init__(self, data_adocao: datetime, animal: Animal, adotante: Adotante,termo_assinado: bool):
+    def __init__(
+        self,
+        data_adocao: datetime,
+        animal: Animal,
+        adotante: Adotante,
+        termo_assinado: bool,
+    ):
         self.__data_adocao = data_adocao
         self.__animal = animal
         self.__adotante = adotante
@@ -47,4 +54,3 @@ class RegistroAdocao:
     def termo_assinado(self, termo_assinado: bool):
         if isinstance(termo_assinado, bool):
             self.__termo_assinado = termo_assinado
-
