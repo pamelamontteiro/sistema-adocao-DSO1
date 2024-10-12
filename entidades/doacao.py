@@ -3,7 +3,7 @@ from entidades.animal import Animal
 from entidades.doador import Doador
 
 
-class RegistroDoacao:
+class Doacao:
     def __init__(self, codigo_registro: int, data_de_doacao: date, animal: Animal, doador: Doador, motivo: str):
         self.__data_de_doacao = data_de_doacao
         self.__codigo_registro = codigo_registro

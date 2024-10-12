@@ -4,7 +4,7 @@ from datetime import datetime
 import uuid
 
 
-class RegistroAdocao:
+class Adocao:
     def __init__(
         self,
         data_adocao: datetime,
