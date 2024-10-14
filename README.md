@@ -14,63 +14,11 @@ Implementação em Python. 🐍
 <br>
 <br>
 
-## Entidades
-
-Objetivo: Garantir a adoção responsável de animais.
-
-- <p><strong> Cadastro de Animais </strong>
-
-    *   Número do chip
-    *   Nome
-    *   Raça
-    *   Tamanho (para cães): Pequeno, Médio, Grande
-
-- <p><strong> Histórico de Vacinação </strong>
-
-    *   Data
-    *   Vacina aplicada
-    *   Cadastro de Doador
-
-- <p><strong> Registro de Doação </strong>
-
-    *   Data da doação
-    *   Animal doado
-    *   Doador
-    *   Motivo da doação
-    *   Cadastro de Adoção
-
-- <p><strong> Adotante </strong>
-
-    *   CPF
-    *   Nome
-    *   Data de nascimento
-    *   Endereço
-    *   Tipo de habitação (Casa ou Apartamento)
-    *   Possui outros animais (Sim ou Não)
-
-- <p><strong> Processo de Adoção </strong>
-
-    *   Avaliação do perfil
-    *   Escolha do animal
-    *   Assinatura do termo de responsabilidade
-
-- <p><strong> Registro de Adoção </strong>
-
-    *   Data
-    *   Animal adotado
-    *   Adotante
-    *   Termo de responsabilidade assinado (Sim ou Não)
-
-- <p><strong> Relatórios </strong>
-       
-    *   Relatório de Adoções
-    *   Relatório de Doações
-    *   Listagem de Animais Disponíveis para Adoção
 
 ## DIAGRAMA UML
 
 
-#Diagrama de Classe (UML) - 
+#Diagrama de Classe (UML) 
 ###
 ```mermaid
 classDiagram
@@ -123,7 +71,7 @@ classDiagram
         - motivo: str
       + << create >> __init__(animal, doador,data_de_doacao,motivo)
     }
-     class Adoacao{
+     class Adocao{
         -  data_adocao: date
         -  termo_assinado: bool
       + << create >> __init__(animal, adotante,data_adocao,termo_assinado)
@@ -136,21 +84,21 @@ classDiagram
     }
   
 
-
     Animal <|-- Gato
     Animal <|-- Cachorro
-    Animal "1" <-- "n" Historico_vacinacao
+    Animal "1" <-- "0 .. *" Historico_vacinacao
     Pessoa <|-- Doador
     Pessoa <|-- Adotante
-    Vacina <|-- Historico_vacinacao 
-    Doacao "n" --> "1" Doador
-    Adotante "-" <-- "1" Adoacao
+    Vacina " 1 .. *" < -- " 0 .. * "Historico_vacinacao 
+    Doacao "0 .. *" --> "1" Doador
+    Adotante "1" <-- " 0 .. * " Adocao
     Animal "0 .. *" <-- "1" Registro
-    Registro *-- Adoacao
-    Registro *-- Doacao
+    Animal "1"< -- "1" Doacao
+    Registro *-- "0 .. * " Adocao
+    Registro *-- "0 .. *"Doacao
 ```
 
-## Diagrama MVC 
+## Diagrama de classe seguindo padrão em MVC 
 ###
 ```mermaid
 classDiagram
@@ -204,7 +152,7 @@ classDiagram
         - motivo: str
       + << create >> __init__(animal, doador,data_de_doacao,motivo)
     }
-     class Adoacao{
+     class Adocao{
         -  data_adocao: date
         -  termo_assinado: bool
       + << create >> __init__(animal, adotante,data_adocao,termo_assinado)
@@ -250,15 +198,16 @@ classDiagram
 
     Animal <|-- Gato
     Animal <|-- Cachorro
-    Animal "1" <-- "n" Historico_vacinacao
+    Animal "1" <-- "0 .. *" Historico_vacinacao
     Pessoa <|-- Doador
     Pessoa <|-- Adotante
-    Vacina <|-- Historico_vacinacao 
-    Doacao "n" --> "1" Doador
-    Adotante "-" <-- "1" Adoacao
-    Animal "0 .. " <-- "1" Registro
-    Registro-- Adoacao
-    Registro *-- Doacao
+    Vacina " 1 .. *" < -- " 0 .. * "Historico_vacinacao 
+    Doacao "0 .. *" --> "1" Doador
+    Adotante "1" <-- " 0 .. * " Adocao
+    Animal "0 .. *" <-- "1" Registro
+    Animal "1"< -- "1" Doacao
+    Registro *-- "0 .. * " Adocao
+    Registro *-- "0 .. *"Doacao
     ControladorGato --> Gato
     TelaGato <--> ControladorGato
 ```
