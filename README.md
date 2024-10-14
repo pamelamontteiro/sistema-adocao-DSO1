@@ -15,10 +15,8 @@ Implementação em Python. 🐍
 <br>
 
 
-## DIAGRAMA UML
+## Diagrama de Classe (UML) 
 
-
-#Diagrama de Classe (UML) 
 ###
 ```mermaid
 classDiagram
@@ -94,6 +92,7 @@ classDiagram
     Adotante "1" <-- " 0 .. * " Adocao
     Animal "0 .. *" <-- "1" Registro
     Animal "1"< -- "1" Doacao
+    Animal "1" < -- "1" Adocao
     Registro *-- "0 .. * " Adocao
     Registro *-- "0 .. *"Doacao
 ```
@@ -206,6 +205,7 @@ classDiagram
     Adotante "1" <-- " 0 .. * " Adocao
     Animal "0 .. *" <-- "1" Registro
     Animal "1"< -- "1" Doacao
+    Animal "1" < -- "1" Adocao
     Registro *-- "0 .. * " Adocao
     Registro *-- "0 .. *"Doacao
     ControladorGato --> Gato
