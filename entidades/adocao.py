@@ -12,11 +12,20 @@ class Adocao:
         adotante: Adotante,
         termo_assinado: bool,
     ):
-        self.__data_adocao = data_adocao
-        self.__animal = animal
-        self.__adotante = adotante
-        self.__termo_assinado = termo_assinado
+        self.__data_adocao = None
+        self.__animal = None
+        self.__adotante = None
+        self.__termo_assinado = None
         self.__id_registro = str(uuid.uuid4())  # Gera um código de registro único
+
+        if isinstance(data_adocao, datetime):
+            self.__data_adocao = data_adocao
+        if isinstance(animal, Animal):
+            self.__animal = animal
+        if isinstance(adotante, Adotante):
+            self.__adotante = adotante
+        if isinstance(termo_assinado, bool):
+            self.__termo_assinado = termo_assinado
 
     @property
     def id_registro(self):
@@ -27,24 +36,27 @@ class Adocao:
         return self.__data_adocao
 
     @data_adocao.setter
-    def data_adocao(self, data_adocao):
-        self.__data_adocao = data_adocao
+    def data_adocao(self, data_adocao: datetime):
+        if isinstance(data_adocao, datetime):
+            self.__data_adocao = data_adocao
 
     @property
     def animal(self):
         return self.__animal
 
     @animal.setter
-    def animal(self, animal):
-        self.__animal = animal
+    def animal(self, animal: Animal):
+        if isinstance(animal, Animal):
+            self.__animal = animal
 
     @property
     def adotante(self):
         return self.__adotante
 
     @adotante.setter
-    def adotante(self, adotante):
-        self.__adotante = adotante
+    def adotante(self, adotante: Adotante):
+        if isinstance(adotante, Adotante):
+            self.__adotante = adotante
 
     @property
     def termo_assinado(self):

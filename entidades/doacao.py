@@ -4,7 +4,14 @@ from entidades.doador import Doador
 
 
 class Doacao:
-    def __init__(self, codigo_registro: int, data_de_doacao: date, animal: Animal, doador: Doador, motivo: str):
+    def __init__(
+        self,
+        codigo_registro: int,
+        data_de_doacao: date,
+        animal: Animal,
+        doador: Doador,
+        motivo: str,
+    ):
         self.__data_de_doacao = data_de_doacao
         self.__codigo_registro = codigo_registro
         self.__animal = animal
@@ -35,6 +42,7 @@ class Doacao:
     def codigo_registro(self, codigo_registro: int):
         if isinstance(codigo_registro, int):
             self.__codigo_regstro = codigo_registro
+
     @motivo.setter
     def motivo(self, motivo: str):
         if isinstance(motivo, str):
