@@ -1,14 +1,14 @@
 from telas.tela_sistema import TelaSistema
 from .controlador_adotantes import ControladorAdotantes
 from .controlador_gatos import ControladorGatos
-
+from .controlador_tipo_habitacao import ControladorTipoHabitacao
 
 class ControladorSistema:
     def __init__(self):
         self.__tela_sistema = TelaSistema()
         self.__controlador_adotantes = ControladorAdotantes(self)
         self.__controlador_gatos = ControladorGatos(self)
-
+        self.__controlador_tipo_habitacao = ControladorTipoHabitacao(self)
     @property
     def controlador_adotantes(self):
         return self.__controlador_adotantes
@@ -16,6 +16,11 @@ class ControladorSistema:
     @property
     def controlador_gatos(self):
         return self.__controlador_gatos
+    
+    @property
+    def controlador_tipo_habitacao(self):
+        return self.__controlador_tipo_habitacao
+
 
     def inicia_sistema(self):
         self.abre_tela()
@@ -27,6 +32,8 @@ class ControladorSistema:
     # 2 - Abre a tela de cadastro de Gatos
     def cadastra_gatos(self):
         self.__controlador_gatos.abre_tela()
+    
+    
 
     # 0 - Encerra o Sistema
     def encerra_sistema(self):

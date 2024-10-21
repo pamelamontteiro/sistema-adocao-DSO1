@@ -3,10 +3,10 @@ from telas.tela_adotante import TelaAdotante
 
 
 class ControladorAdotantes:
-    def __init__(self, controlador_sistema):
+    def __init__(self, controlador_sistemas):
         self.__adotantes = []
         self.__tela_adotante = TelaAdotante()
-        self.__controlador_sistema = controlador_sistema
+        self.__controlador_sistemas = controlador_sistemas
 
     def pega_adotante_por_cpf(self, cpf: int):
         for adotante in self.__adotantes:
@@ -18,7 +18,7 @@ class ControladorAdotantes:
         dados_adotante = self.__tela_adotante.pega_dados_adotante()
         data_nascimento = self.__tela_adotante.pega_data_nascimento_adotante()
         tipo_habitacao = (
-            self.__controlador_sistema.controlador_tipos_habitacao.incluir_tipo_habitacao()
+            self.__controlador_sistemas.controlador_tipo_habitacao.incluir_tipo_habitacao()
         )
         cpf_valido = self.pega_adotante_por_cpf(dados_adotante["cpf"])
         if cpf_valido is None:
@@ -58,7 +58,7 @@ class ControladorAdotantes:
                     {
                         "cpf": adotante.cpf,
                         "nome": adotante.nome,
-                        "nascimento": adotante.nascimento,
+                        "nascimento": adotante.data_nascimento,
                         "endereco": adotante.endereco,
                         "tem_outros_animais": adotante.tem_outros_animais,
                         "tipo_habitacao": adotante.tipo_habitacao,
@@ -78,7 +78,7 @@ class ControladorAdotantes:
         if adotante is not None:
             novos_dados_adotante = self.__tela_adotante.pega_dados_adotante_alt()
             novo_tipo_habitacao = (
-                self.__controlador_sistema.controlador_tipos_habitacao.incluir_tipo_habitacao()
+                self.__controlador_sistemas.controlador_tipo_habitacao.incluir_tipo_habitacao()
             )
             adotante.nome = novos_dados_adotante["nome"]
             adotante.data_nascimento = novos_dados_adotante["data_nascimento"]
@@ -113,7 +113,7 @@ class ControladorAdotantes:
             self.__tela_adotante.tela_opcoes()
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_sistemas.abre_tela()
 
     def abre_tela(self):
         lista_opcoes = {
