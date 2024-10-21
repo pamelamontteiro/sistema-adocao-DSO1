@@ -6,20 +6,27 @@ from entidades.doador import Doador
 class Doacao:
     def __init__(
         self,
-        codigo_registro: int,
+        id_registro: int,
         data_de_doacao: date,
         animal: Animal,
         doador: Doador,
         motivo: str,
     ):
-        self.__data_de_doacao = data_de_doacao
-        self.__codigo_registro = codigo_registro
+        self.__data_de_doacao = None
+        self.__id_registro = None
         self.__animal = animal
         self.__doador = doador
+        self.__motivo = None
+
+    if isinstance (id_registro, int):
+        self.__id_registro = id_registro
+    if isinstance (data_de_doacao, date):
+        self.__data_de_doacao = data_de_doacao
+    if isinstance (motivo, str):
         self.__motivo = motivo
 
     @property
-    def codigo_registro(self):
+    def id_registro(self):
         return self.__codigo_registro
 
     @property
@@ -38,12 +45,19 @@ class Doacao:
     def motivo(self):
         return self.__motivo
 
-    @codigo_registro.setter
-    def codigo_registro(self, codigo_registro: int):
-        if isinstance(codigo_registro, int):
-            self.__codigo_regstro = codigo_registro
+    @id_registro.setter
+    def id_registro(self, id_registro: int):
+        if isinstance(id_registro, int):
+            self.__id_regstro = id_registro
 
     @motivo.setter
     def motivo(self, motivo: str):
         if isinstance(motivo, str):
             self.__motivo = motivo
+
+    @data_de_doacao.setter
+    def data_de_doacao(self, data_de_doacao: date):
+        if isinstance (data_de_doacao, date):
+            self.__data_de_doacao = data_de_doacao
+
+    
