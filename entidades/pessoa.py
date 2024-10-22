@@ -13,7 +13,7 @@ class Pessoa(ABC):
 
         if isinstance(nome, str):
             self.__nome = nome
-        if isinstance(cpf, int):
+        if isinstance(cpf, str):
             self.__cpf = cpf
         if isinstance(data_nascimento, date):
             self.__data_nascimento = data_nascimento
