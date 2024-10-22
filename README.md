@@ -10,7 +10,7 @@ Este projeto foi desenvolvido durante as aulas de <b> Desenvolvimento de Sistema
     
 
 
-<img height="200" src="gatos.gif">
+<img height="200" src="Documentacao/gatos.gif">
 
 <br>
 <br>
