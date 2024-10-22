@@ -1,6 +1,6 @@
 from entidades.doador import Doador
 from telas.tela_doador import TelaDoador
-
+from datetime import datetime
 
 class ControladorDoadores():
     def __init__(self, controlador_sistemas):
@@ -8,7 +8,7 @@ class ControladorDoadores():
         self.__tela_doador = TelaDoador()
         self.__controlador_sistemas = controlador_sistemas
 
-    def pegar_doador_por_cpf(self, cpf: int):
+    def pegar_doador_por_cpf(self, cpf: str):
         for doador in self.__doadores:
             if (doador.cpf == cpf):
                 return doador
@@ -19,7 +19,7 @@ class ControladorDoadores():
         cpf_valido = self.pegar_doador_por_cpf(dados_doador['cpf'])
         if cpf_valido is None:   # Se não estiver cadastrado, cria um novo doador e adiciona à lista.
                 doador = Doador(
-                    dados_doador["nome"], dados_doador["cpf"], dados_doador["data_nascimento"],
+                    dados_doador["cpf"], dados_doador["nome"], datetime.strptime(dados_doador["data_nascimento"], "%d/%m/%Y").date() ,
                     dados_doador["endereco"])
                 self.__doadores.append(doador)
                 self.__tela_doador.mostra_mensagem("Doador cadastrado com sucesso no sistema.")
@@ -37,7 +37,7 @@ class ControladorDoadores():
         else:
             self.__tela_doador.mostra_mensagem(
                 "ATENÇÃO: não existe nenhum doador cadastrado no Sistema.")
-            self.__controlador_sistema.abre_tela()
+            self.__controlador_sistemas.abre_tela()
 
     def alterar_doador(self):
         self.listar_doadores()
