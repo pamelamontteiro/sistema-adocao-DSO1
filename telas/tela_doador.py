@@ -1,4 +1,4 @@
-class TelaDoador():
+class TelaDoador:
     def tela_opcoes(self):
         print("-------- DOADOR --------")
         print("Escolha a opcao")
@@ -17,7 +17,12 @@ class TelaDoador():
         cpf = input("CPF: ")
         data_nascimento = input("Data de nascimento: ")
         endereco = input("Endereço: ")
-        return {"nome": nome, "cpf": cpf, "data_nascimento": data_nascimento, "endereco": endereco}
+        return {
+            "nome": nome,
+            "cpf": cpf,
+            "data_nascimento": data_nascimento,
+            "endereco": endereco,
+        }
 
     def mostra_doador(self, dados_doador):
         print("------------------------------------")

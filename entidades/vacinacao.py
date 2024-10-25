@@ -6,9 +6,9 @@ class Vacinacao:
     def __init__(self, data_de_vacinacao: date, vacina: Vacina):
         self.__data_de_vacinacao = None
         self.__vacina = None
-        if isinstance (data_de_vacinacao, date):
+        if isinstance(data_de_vacinacao, date):
             self.__data_de_vacinacao = data_de_vacinacao
-        if isinstance (vacina, Vacina):
+        if isinstance(vacina, Vacina):
             self.__vacina = vacina
 
     @property
@@ -17,7 +17,7 @@ class Vacinacao:
 
     @data_de_vacinacao.setter
     def data_de_vacinacao(self, data_de_vacinacao):
-        if isinstance (data_de_vacinacao, date):
+        if isinstance(data_de_vacinacao, date):
             self.__data_de_vacinacao = data_de_vacinacao
 
     @property
@@ -26,5 +26,5 @@ class Vacinacao:
 
     @vacina.setter
     def vacina(self, vacina):
-        if isinstance (vacina, Vacina):
+        if isinstance(vacina, Vacina):
             self.__vacina = vacina

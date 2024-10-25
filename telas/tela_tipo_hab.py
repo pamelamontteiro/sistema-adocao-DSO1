@@ -1,4 +1,4 @@
-class TelaTipoHabitacao():
+class TelaTipoHabitacao:
     def pega_tipo_habitacao(self):
         print("-------- TIPO DE HABITACAO DO ADOTANTE --------")
         print("1 - Casa pequena")

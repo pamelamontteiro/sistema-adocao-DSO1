@@ -18,12 +18,12 @@ class Doacao:
         self.__doador = doador
         self.__motivo = None
 
-    if isinstance (id_registro, int):
-        self.__id_registro = id_registro
-    if isinstance (data_de_doacao, date):
-        self.__data_de_doacao = data_de_doacao
-    if isinstance (motivo, str):
-        self.__motivo = motivo
+        if isinstance(id_registro, int):
+            self.__id_registro = id_registro
+        if isinstance(data_de_doacao, date):
+            self.__data_de_doacao = data_de_doacao
+        if isinstance(motivo, str):
+            self.__motivo = motivo
 
     @property
     def id_registro(self):
@@ -57,7 +57,5 @@ class Doacao:
 
     @data_de_doacao.setter
     def data_de_doacao(self, data_de_doacao: date):
-        if isinstance (data_de_doacao, date):
+        if isinstance(data_de_doacao, date):
             self.__data_de_doacao = data_de_doacao
-
-    
