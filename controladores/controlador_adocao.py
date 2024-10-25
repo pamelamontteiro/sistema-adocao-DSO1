@@ -5,7 +5,7 @@ from datetime import datetime
 from datetime import date
 
 
-class ControladorRegistrosAdocao:
+class ControladorAdocao:
     def __init__(self, controlador_sistemas):
         self.__controlador_sistemas = controlador_sistemas
         self.__adocao = []  # Lista para armazenar adoções
