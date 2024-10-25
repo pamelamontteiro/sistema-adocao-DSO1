@@ -3,6 +3,7 @@ from .controlador_adotantes import ControladorAdotantes
 from .controlador_doador import ControladorDoadores
 from .controlador_gatos import ControladorGatos
 from .controlador_tipo_habitacao import ControladorTipoHabitacao
+from .controlador_adocao import ControladorAdocao
 
 
 class ControladorSistema:
@@ -12,6 +13,8 @@ class ControladorSistema:
         self.__controlador_doador = ControladorDoadores(self)
         self.__controlador_gatos = ControladorGatos(self)
         self.__controlador_tipo_habitacao = ControladorTipoHabitacao(self)
+        self.__controlador_adocao = ControladorAdocao(self)
+
 
     @property
     def controlador_adotantes(self):
@@ -44,6 +47,11 @@ class ControladorSistema:
     def cadastra_gatos(self):
         self.__controlador_gatos.abre_tela()
 
+    # 4 - Abre a tela de cadastro de Adocao
+    def cadastra_adocao(self):
+        self.__controlador_adocao.abre_tela()
+
+
     # 0 - Encerra o Sistema
     def encerra_sistema(self):
         exit(0)
@@ -53,12 +61,13 @@ class ControladorSistema:
             1: self.cadastra_adotantes,
             2: self.cadastra_doador,
             3: self.cadastra_gatos,
+            4: self.cadastra_adocao,
             0: self.encerra_sistema,
         }
 
         while True:
             opcao_escolhida = self.__tela_sistema.tela_opcoes()
-            while opcao_escolhida not in (1, 2, 3, 0):
+            while opcao_escolhida not in (1, 2, 3, 4, 0):
                 self.__tela_sistema.mostra_mensagem(
                     "ERRO: Opção inválida, tente novamente."
                 )
