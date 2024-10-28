@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
 from datetime import date
+from entidades.vacina import Vacina
+from entidades.vacinacao import Vacinacao
 
 
 class Animal(ABC):
     @abstractmethod
     def __init__(self, numero_chip: int, nome: str, raca: str):
-        self.__historicos_vacinacao = []  # Lista para armazenar histórico de vacinação
+        self.__vacinacao = []  # Lista para armazenar histórico de vacinação
         self.__numero_chip = None
         self.__nome = None
         self.__raca = None
@@ -18,8 +20,8 @@ class Animal(ABC):
             self.__raca = raca
 
     @property
-    def historicos_vacinacao(self):
-        return self.__historicos_vacinacao
+    def vacinacao(self):
+        return self.__vacinacao
 
     @property
     def numero_chip(self):
@@ -48,20 +50,21 @@ class Animal(ABC):
         if isinstance(raca, str):
             self.__raca = raca
 
-    @historicos_vacinacao.setter
-    def historicos_vacinacao(self, historico_vacinacao: dict):
+    @vacinacao.setter
+    def vacinacao(self, vacinacao: Vacinacao):
         # Adiciona um histórico de vacinação, garantindo que seja um dicionário
-        if isinstance(historico_vacinacao, dict):
-            self.__historicos_vacinacao.append(historico_vacinacao)
+        if isinstance(vacinacao, Vacinacao):
+            self.__vacinacao.append(vacinacao)
 
-    def listar_vacinas_historico(self):
+    def listar_vacinacao(self):
         # Retorna uma lista com o nome das vacinas aplicadas
-        return [historico["vacina"] for historico in self.__historicos_vacinacao]
+        return [vacinacao.vacina.nome_vacina for vacinacao in self.__vacinacao]
 
-    def registrar_vacina(self, data_vacina: date, vacina: str):
+    def registrar_vacina(self, data_vacina: date, vacina: Vacina):
         # Adiciona uma nova entrada no histórico de vacinação
-        if isinstance(data_vacina, date) and isinstance(vacina, str):
-            self.__historicos_vacinacao.append({"data": data_vacina, "vacina": vacina})
+        if isinstance(data_vacina, date) and isinstance(vacina, Vacina):
+            vacinacao = Vacinacao(data_vacina, vacina)
+            self.__vacinacao.append(vacinacao)
             print(
-                f'Vacina "{vacina}" registrada com sucesso para {self.nome} na data {data_vacina}'
+                f'Vacina "{vacina.nome_vacina}" registrada com sucesso para {self.nome} na data {data_vacina}'
             )

@@ -1,13 +1,14 @@
+import uuid
+from datetime import date
+
 from entidades.adotante import Adotante
 from entidades.animal import Animal
-from datetime import datetime
-import uuid
 
 
 class Adocao:
     def __init__(
         self,
-        data_adocao: datetime,
+        data_adocao: date,
         animal: Animal,
         adotante: Adotante,
         termo_assinado: bool,
@@ -18,7 +19,7 @@ class Adocao:
         self.__termo_assinado = None
         self.__id_registro = str(uuid.uuid4())  # Gera um código de registro único
 
-        if isinstance(data_adocao, datetime):
+        if isinstance(data_adocao, date):
             self.__data_adocao = data_adocao
         if isinstance(animal, Animal):
             self.__animal = animal
@@ -36,8 +37,8 @@ class Adocao:
         return self.__data_adocao
 
     @data_adocao.setter
-    def data_adocao(self, data_adocao: datetime):
-        if isinstance(data_adocao, datetime):
+    def data_adocao(self, data_adocao: date):
+        if isinstance(data_adocao, date):
             self.__data_adocao = data_adocao
 
     @property

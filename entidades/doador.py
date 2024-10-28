@@ -1,5 +1,5 @@
-from entidades.pessoa import Pessoa
 from datetime import date
+from entidades.pessoa import Pessoa
 
 
 class Doador(Pessoa):
