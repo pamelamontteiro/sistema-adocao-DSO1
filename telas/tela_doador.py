@@ -1,3 +1,6 @@
+
+from utils import verifica_cpf, verifica_nome
+
 class TelaDoador:
     def tela_opcoes(self):
         print("-------- DOADOR --------")
@@ -13,8 +16,14 @@ class TelaDoador:
 
     def pega_dados_doador(self):
         print("-------- DADOS DOADOR --------")
-        nome = input("Nome: ")
-        cpf = input("CPF: ")
+        cpf = input("CPF (XXX.XXX.XXX-XX): ")
+        while not verifica_cpf(cpf):
+            print("CPF inválido, digite novamente.")
+            cpf = input("CPF (XXX.XXX.XXX-XX): ")
+        nome = input("Nome completo: ")
+        while not verifica_nome(nome):
+            print("Nome precisa ser completo e não pode conter números.")
+            nome = input("Nome completo: ")
         data_nascimento = input("Data de nascimento: ")
         endereco = input("Endereço: ")
         return {

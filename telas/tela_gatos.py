@@ -11,18 +11,27 @@ class TelaGato:
         opcao = int(input("Escolha a opcao: "))
         return opcao
 
-    def pega_dados_gato(self):
+    def pega_dados_gato(self, racas):
         print("-------- DADOS GATO --------")
         nome = input("Nome: ")
-        raca = input("Raça: ")
+        raca = self.pega_raca_gato(racas)
         return {"nome": nome, "raca": raca}
+    
+    def pega_raca_gato(self, racas):
+        print("Escolha a raça do gato")
+        for idx, raca in enumerate(racas):
+            print(f"{idx+1} - {raca}")
+
+        opcao_raca = int(input("Escolha a raca: "))
+        opcao_raca = opcao_raca - 1
+        return racas[opcao_raca]
 
     def mostra_gato(self, dados_gato):
         print("------------------------------------")
         print("NOME DO GATO: ", dados_gato["nome"])
         print("RAÇA DO GATO: ", dados_gato["raca"])
         print("NUMERO CHIP DO GATO: ", dados_gato["numero_chip"])
-        print("HISTORICO VACINAÇÃO DO GATO: ", dados_gato["historico"])
+        print("HISTORICO VACINAÇÃO DO GATO: ", dados_gato["vacinacao"])
 
     def seleciona_gato(self):
         numero_chip = int(input("Numero do chip do gato que deseja selecionar: "))

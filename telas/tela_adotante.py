@@ -1,3 +1,5 @@
+from utils import verifica_cpf, verifica_nome
+
 class TelaAdotante:
     def tela_opcoes(self):
         print("-------- ADOTANTE --------")
@@ -12,16 +14,23 @@ class TelaAdotante:
         return opcao
 
     def pega_data_nascimento_adotante(self):
-        dia_nascimento = input("Dia de nascimento com dois dígitos: ")
-        mes_nascimento = input("Mês de nascimento com dois dígitos:: ")
-        ano_nascimento = input("Ano de nascimento com quatro dígitos: ")
-        data_nascimento = f"{dia_nascimento}/{mes_nascimento}/{ano_nascimento}"
+        data_nascimento = input("Data de nascimento (dia/mes/ano): ")
+        # dia_nascimento = input("Dia de nascimento com dois dígitos: ")
+        # mes_nascimento = input("Mês de nascimento com dois dígitos:: ")
+        # ano_nascimento = input("Ano de nascimento com quatro dígitos: ")
+        # data_nascimento = f"{dia_nascimento}/{mes_nascimento}/{ano_nascimento}"
         return data_nascimento
 
     def pega_dados_adotante(self):
         print("-------- DADOS ADOTANTE --------")
-        cpf = input("CPF: ")
-        nome = input("Nome: ")
+        cpf = input("CPF (XXX.XXX.XXX-XX): ")
+        while not verifica_cpf(cpf):
+            print("CPF inválido, digite novamente.")
+            cpf = input("CPF (XXX.XXX.XXX-XX): ")
+        nome = input("Nome completo: ")
+        while not verifica_nome(nome):
+            print("Nome precisa ser completo e não pode conter números.")
+            nome = input("Nome completo: ")
         endereco = input("Endereço: ")
         tem_outros_animais = input("Possui outros animais?(S/N) ")
 
@@ -49,7 +58,10 @@ class TelaAdotante:
         print("------------------------------------")
         print("CPF DO ADOTANTE: ", dados_adotante["cpf"])
         print("NOME DO ADOTANTE: ", dados_adotante["nome"])
-        print("DATA DE NASCIMENTO DO ADOTANTE: ", dados_adotante["data_nascimento"])
+        print(
+            "DATA DE NASCIMENTO DO ADOTANTE: ",
+            dados_adotante["data_nascimento"].strftime("%d/%m/%Y"),
+        )
         print("ENDERECO DO ADOTANTE: ", dados_adotante["endereco"])
         print("OUTROS ANIMAIS: ", dados_adotante["tem_outros_animais"])
         print("TIPO DE HABITACAO: ", dados_adotante["tipo_habitacao"])
