@@ -1,3 +1,4 @@
+from datetime import datetime
 from entidades.adotante import Adotante
 from telas.tela_adotante import TelaAdotante
 
@@ -17,6 +18,7 @@ class ControladorAdotantes:
     def incluir_adotante(self):
         dados_adotante = self.__tela_adotante.pega_dados_adotante()
         data_nascimento = self.__tela_adotante.pega_data_nascimento_adotante()
+        data_nascimento = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
         tipo_habitacao = (
             self.__controlador_sistemas.controlador_tipo_habitacao.incluir_tipo_habitacao()
         )
@@ -58,7 +60,7 @@ class ControladorAdotantes:
                     {
                         "cpf": adotante.cpf,
                         "nome": adotante.nome,
-                        "nascimento": adotante.data_nascimento,
+                        "data_nascimento": adotante.data_nascimento,
                         "endereco": adotante.endereco,
                         "tem_outros_animais": adotante.tem_outros_animais,
                         "tipo_habitacao": adotante.tipo_habitacao,
@@ -68,7 +70,7 @@ class ControladorAdotantes:
             self.__tela_adotante.mostra_mensagem(
                 "ATENÇÃO: não existe nenhum adotante cadastrado no Sistema."
             )
-            self.__controlador_sistema.abre_tela()
+            self.__controlador_sistemas.abre_tela()
 
     def alterar_adotante(self):
         self.listar_adotantes()

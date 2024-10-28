@@ -1,6 +1,6 @@
+from datetime import datetime
 from entidades.doador import Doador
 from telas.tela_doador import TelaDoador
-from datetime import datetime
 
 
 class ControladorDoadores:

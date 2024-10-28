@@ -1,8 +1,7 @@
+from datetime import date, datetime
+from uuid import uuid4
 from entidades.adocao import Adocao
 from telas.tela_adocao import TelaAdocao
-from uuid import uuid4
-from datetime import datetime
-from datetime import date
 
 
 class ControladorAdocao:
@@ -11,7 +10,7 @@ class ControladorAdocao:
         self.__adocao = []  # Lista para armazenar adoções
         self.__tela_adocao = TelaAdocao()  # Objeto da tela de adoção
 
-    def pega_adocao_por_codigo(self, codigo: int):
+    def pega_adocao_por_id(self, codigo: int):
         for adocao in self.__adocao:
             if adocao.id_registro == codigo:
                 return adocao
@@ -41,11 +40,11 @@ class ControladorAdocao:
         data_atual = datetime.now().date()
         idade_minima = 18
         try:
-            data_formatada = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
-            diferenca_anos = data_atual.year - data_formatada.year
+            # data_formatada = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
+            diferenca_anos = data_atual.year - data_nascimento.year
             if (data_atual.month, data_atual.day) < (
-                data_formatada.month,
-                data_formatada.day,
+                data_nascimento.month,
+                data_nascimento.day,
             ):
                 diferenca_anos -= 1
             if diferenca_anos >= idade_minima:
@@ -67,7 +66,7 @@ class ControladorAdocao:
     # TODO: a parte controle de doação não foi feita, arrumar o codigo depois
     def verifica_se_nao_doou(self, adotante):
         if (
-            self.__controlador_sistema.controlador_doacao.pega_doacao_por_doador(
+            self.__controlador_sistemas.controlador_doacao.pega_doacao_por_doador(
                 adotante
             )
             is None
@@ -84,7 +83,7 @@ class ControladorAdocao:
             )
             self.retornar()
 
-    # TODO: A tela vVacina e Vacinão não esta feita, depois verificar essa parte do codigo
+    # TODO: A tela Vacina e Vacinão não esta feita, depois verificar essa parte do codigo
     def verifica_vacinas(self, animal):
         quantidade_vacina = len(animal.vacinacao)
         if quantidade_vacina == 3:
@@ -119,23 +118,23 @@ class ControladorAdocao:
                     dados_adocao["cpf"]
                 )
             )
-            gato = self.__controlador_sistemas.controlador_gatos.pega_gato_por_num_chip(
-                dados_adocao["numero_chip"]
+            gato = (
+                self.__controlador_sistemas.controlador_gatos.pega_gato_por_numero_chip(
+                    dados_adocao["numero_chip"]
+                )
             )
             if adotante is not None and gato is not None:
                 # Faz as verificaçoes necessarias para adoçao
                 self.verifica_maior_idade(adotante.data_nascimento)
                 self.verifica_vacinas(gato)
                 self.verifica_se_nao_doou(adotante)
-                id_registro = uuid4().int
                 data = date.today()
-                adocao = Adocao(id_registro, data, gato, adotante, False)
+                adocao = Adocao(data, gato, adotante, False)
+                id_registro = adocao.id_registro
                 self.__adocao.append(adocao)
                 # Coleta a assinatura do termo de responsabilidade
                 self.assinar_termo_assinado(id_registro)
-                self.__controlador_sistemas.controlador_gatos.gatos.remove(
-                    gato
-                )  
+                self.__controlador_sistemas.controlador_gatos.gatos.remove(gato)
                 self.__tela_adocao.mostra_mensagem(
                     f"Inclusão de adoção realizada com sucesso."
                 )
@@ -144,35 +143,70 @@ class ControladorAdocao:
                     "ERRO: Os dados que você forneceu estão incorretos."
                 )
 
+        # TODO: Testar depois que a tela cachorros e controlador cachorro forem feitos
+        # elif gato_ou_cachorro == 2:
+        #     self.__controlador_sistemas.controlador_cachorro.listar_cachorros()
+        #     dados_adocao = self.__tela_adocao.pega_dados_adocao()
+        #     adotante = (
+        #         self.__controlador_sistemas.controlador_adotantes.pega_adotante_por_cpf(
+        #             dados_adocao["cpf"]
+        #         )
+        #     )
+        #     cachorro = self.__controlador_sistemas.controlador_cachorro.pega_cachorro_por_numero_chip(
+        #         dados_adocao["numero_chip"]
+        #     )
+        #     if adotante is not None and cachorro is not None:
+        #         # Faz as verificaçoes necessarias para adoçao
+        #         self.verifica_tipo_habitacao(adotante, cachorro)
+        #         self.verifica_maior_idade(adotante.data_nascimento)
+        #         self.verifica_vacinas(cachorro)
+        #         self.verifica_se_nao_doou(adotante)
+        #         # Cria o Registro de Adocao
+        #         id_registro = uuid4().int
+        #         data_de_doacao = date.today()
+        #         adocao = Adocao(id_registro, data_de_doacao, cachorro, adotante, False)
+        #         self.__adocao.append(adocao)
+        #         # Coleta a assinatura do termo de responsabilidade
+        #         self.assinar_termo_assinado(id_registro)
+        #         self.__controlador_sistemas.controlador_cachorro.cachorro.remove(
+        #             cachorro
+        #         )  # Remove o animal da lista de animais disponíveis
+        #         self.__tela_adocao.mostra_mensagem(
+        #             f"Inclusão de adoção realizada com sucesso."
+        #         )
+        #     else:
+        #         self.__tela_adocao.mostra_mensagem(
+        #             "ERRO: Os dados que você forneceu estão incorretos."
+        #         )
+
     def listar_adocao(self):
         for adocao in self.__adocao:
             # inserir animal fazer metodo abstrato em animal
             self.__tela_adocao.exibir_adocao(
                 {
-                    "codigo_registro": adocao.id_registro,
-                    "data": adocao.data_adocao,
+                    "id_registro": adocao.id_registro,
+                    "data_adocao": adocao.data_adocao,
                     "cpf_adotante": adocao.adotante.cpf,
-                    "termo_responsabilidade": adocao.termo_assinado,
+                    "termo_assinado": adocao.termo_assinado,
                 }
             )
 
-    # TODO: verificar depois essa função
     def excluir_adocao(self):
         self.listar_adocao()
-        codigo_adocao = self.__tela_adocao.seleciona_adocao()
-        adocao = self.pega_adocao_por_codigo(int(codigo_adocao))
+        id_adocao = self.__tela_adocao.seleciona_adocao()
+        adocao = self.pega_adocao_por_id(int(id_adocao))
 
         if adocao is not None:
             self.__adocao.remove(adocao)
             self.__tela_adocao.mostra_mensagem(
-                f"Registro de adoção com código {codigo_adocao} removido com sucesso."
+                f"Registro de adoção com ID {id_adocao} removido com sucesso."
             )
             self.listar_adocao()
         else:
             self.__tela_adocao.mostra_mensagem("ATENCAO: ID de Adoção não existente")
 
     def assinar_termo_assinado(self, id_adocao):
-        adocao = self.pega_adocao_por_codigo(id_adocao)
+        adocao = self.pega_adocao_por_id(id_adocao)
         if adocao is not None:
             while True:
                 termo_assinado = self.__tela_adocao.pega_assinatura_termo_assinado()
@@ -217,9 +251,18 @@ class ControladorAdocao:
             self.__tela_adocao.mostra_mensagem(
                 "ATENÇAO: Não existe nenhum gato disponivel para adoçao."
             )
-        # TODO: fazer a parte do relatorio da adoção do cachorro
-        # self.__tela_adocao.mostra_mensagem(
-        #     "-------- CACHORROS --------")
+        
+        # TODO: testar depois que a tela cachorros e controlador cachorro for feito
+        # self.__tela_adocao.mostra_mensagem("-------- CACHORROS --------")
+        # tam_lista_cachorros = len(
+        #     self.__controlador_sistemas.controlador_cachorro.cachorro
+        # )
+        # if tam_lista_cachorros > 0:
+        #     self.__controlador_sistemas.controlador_cachorro.listar_cachorros()
+        # else:
+        #     self.__tela_registro_adocao.mostra_mensagem(
+        #         "ATENÇAO: Não existe nenhum cachorro disponivel para adoçao."
+        #     )
 
     def retornar(self):
         self.__controlador_sistemas.abre_tela()

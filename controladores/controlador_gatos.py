@@ -1,26 +1,28 @@
+from uuid import uuid4
 from entidades.gato import Gato
 from telas.tela_gatos import TelaGato
-from uuid import uuid4
 
 
 class ControladorGatos:
-    def __init__(self, controlador_sistema):
+    __RACAS = ['Siamês', 'Persa', 'Ragdoll', 'Sphynx', 'Vira-lata', 'Munchkin']
+
+    def __init__(self, controlador_sistemas):
         self.__gatos = []
         self.__tela_gatos = TelaGato()
-        self.__controlador_sistema = controlador_sistema
+        self.__controlador_sistemas = controlador_sistemas
 
     @property
     def gatos(self):
         return self.__gatos
 
-    def pega_gato_por_num_chip(self, numero_chip: int):
+    def pega_gato_por_numero_chip(self, numero_chip: int):
         for gato in self.__gatos:
             if gato.numero_chip == numero_chip:
                 return gato
         return None
 
     def incluir_gato(self):
-        dados_gato = self.__tela_gatos.pega_dados_gato()
+        dados_gato = self.__tela_gatos.pega_dados_gato(self.__RACAS)
         numero_chip = uuid4().int
         gato = Gato(numero_chip, dados_gato["nome"], dados_gato["raca"])
         dados_gato["numero_chip"] = numero_chip
@@ -36,25 +38,25 @@ class ControladorGatos:
                         "numero_chip": gato.numero_chip,
                         "nome": gato.nome,
                         "raca": gato.raca,
-                        "historico": gato.listar_vacinas_historico(),
+                        "vacinacao": gato.listar_vacinacao(),
                     }
                 )
         else:
             self.__tela_gatos.mostra_mensagem(
                 "ERRO: Não existe nenhum gato cadastrado no sistema."
             )
-            self.__controlador_sistema.abre_tela()
+            self.__controlador_sistemas.abre_tela()
 
     def alterar_gato(self):
         self.listar_gatos()
         numero_chip = self.__tela_gatos.seleciona_gato()
-        gato = self.pega_gato_por_num_chip(numero_chip)
+        gato = self.pega_gato_por_numero_chip(numero_chip)
 
         if gato is not None:
             novos_dados_gato = self.__tela_gatos.pega_dados_gato()
             gato.nome = novos_dados_gato["nome"]
             gato.raca = novos_dados_gato["raca"]
-            # num_chip é fixo (?) resposta: vou considerar q sim
+            # numero_chip é fixo (?) resposta: vou considerar q sim
             # historico_vacinacao só pode ser alterado na sua tela (?)
             self.listar_gatos()
         else:
@@ -64,7 +66,7 @@ class ControladorGatos:
     def excluir_gato(self):
         self.listar_gatos()
         numero_chip = self.__tela_gatos.seleciona_gato()
-        gato = self.pega_gato_por_num_chip(numero_chip)
+        gato = self.pega_gato_por_numero_chip(numero_chip)
 
         if gato is not None:
             self.__gatos.remove(gato)
@@ -82,7 +84,7 @@ class ControladorGatos:
             self.__tela_gatos.tela_opcoes()
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_sistemas.abre_tela()
 
     def abre_tela(self):
         lista_opcoes = {
