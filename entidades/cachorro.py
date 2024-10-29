@@ -1,5 +1,5 @@
 from entidades.animal import Animal
-from entidades.historico_vacinacao import HistoricoVacinacao
+from entidades.vacinacao import Vacinacao
 
 
 class Cachorro(Animal):
