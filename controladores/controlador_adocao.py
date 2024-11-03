@@ -67,7 +67,6 @@ class ControladorAdocao:
             )
             self.retornar()
 
-    # TODO: a parte controle de doação não foi feita, arrumar o codigo depois
     def verifica_se_nao_doou(self, adotante):
         if (
             self.__controlador_sistemas.controlador_doacao.pega_doacao_por_doador(
@@ -87,7 +86,6 @@ class ControladorAdocao:
             )
             self.retornar()
 
-    # TODO: A tela vVacina e Vacinão não esta feita, depois verificar essa parte do codigo
     def verifica_vacinas(self, animal):
         quantidade_vacina = len(animal.vacinacao)
         if quantidade_vacina == 3:
