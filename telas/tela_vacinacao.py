@@ -1,36 +1,32 @@
-from datetime import datetime, date
-
 class TelaVacinacao:
     def tela_opcoes(self):
-        print("-------- VACINAÇÃO --------")
-        print("Escolha a opção:")
-        print("1 - Incluir vacinação")
-        print("2 - Alterar vacinação")
-        print("3 - Listar vacinações")
-        print("4 - Excluir vacinação")
+        print("-------- HISTÓRICO VACINAÇÃO --------")
+        print("Escolha a opcao")
+        print("1 - Incluir histórico de vacinação")
+        print("2 - Listar históricos de vacinação")
         print("0 - Retornar")
-        
+
         opcao = int(input("Escolha a opção: "))
         return opcao
 
-    def pega_data_vacinacao(self):
-        while True:
-            data_vacinacao_input = input("Digite a data de vacinação (dd-mm-aaaa): ")
-            try:
-                data_vacinacao = datetime.strptime(data_vacinacao_input, "%d-%m-%Y").date()
-                return {"data_vacinacao": data_vacinacao}  # Mover o return para fora do while
-            except ValueError:
-                print("Data inválida. Por favor, use o formato dd-mm-aaaa.")
+    def seleciona_gato_ou_cachorro(self):
+        print("Um cachorro um gato será vacinado?")
+        print("1 - Gato")
+        print("2 - Cachorro")
+        opcao = int(input("Escolha a opção: "))
+        return opcao
 
-    def seleciona_vacinacao(self):
-        codigo_vacinacao = int(input("Digite o código da vacinação que deseja selecionar: "))
-        return codigo_vacinacao
+    def pega_dados_historico(self):
+        print("-------- HISTÓRICO VACINAÇÃO --------")
+        numero_chip_animal = int(input("Digite o número do chip do animal vacinado: "))
+        return {"numero_chip_animal": numero_chip_animal}
 
     def mostra_vacinacao(self, dados_vacinacao):
-        print("------------------------------------")
-        print("NOME DA VACINA: ", dados_vacinacao["nome_vacina"])
-        print("CÓDIGO DA VACINAÇÃO: ", dados_vacinacao["codigo_vacinacao"])
-        print("DATA DA VACINAÇÃO: ", dados_vacinacao["data_vacinacao"].strftime("%d-%m-%Y"))  # Formata a data para exibição
+        for vacinacao in dados_vacinacao:
+            print("DATA VACINACAO: ", vacinacao["data_de_vacinacao"])
+            print("ANIMAL: ", vacinacao["animal"])
+            print("NOME DA VACINA: ", vacinacao["vacina"])
+            print("\n")
 
     def mostra_mensagem(self, msg):
         print(msg)

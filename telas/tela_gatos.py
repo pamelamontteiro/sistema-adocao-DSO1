@@ -16,7 +16,7 @@ class TelaGato:
         nome = input("Nome: ")
         raca = self.pega_raca_gato(racas)
         return {"nome": nome, "raca": raca}
-    
+
     def pega_raca_gato(self, racas):
         print("Escolha a raça do gato")
         for idx, raca in enumerate(racas):
@@ -34,7 +34,9 @@ class TelaGato:
         print("HISTORICO VACINAÇÃO DO GATO: ", dados_gato["vacinacao"])
 
     def seleciona_gato(self):
-        numero_chip = int(input("Numero do chip do gato que deseja selecionar: "))
+        numero_chip = int(
+            input("Numero do chip do gato que deseja selecionar: ").strip()
+        )
         return numero_chip
 
     def mostra_mensagem(self, msg):

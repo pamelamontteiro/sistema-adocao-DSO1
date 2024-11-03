@@ -1,4 +1,8 @@
 from utils import verifica_cpf, verifica_nome
+from exception.CPFException import CPFException
+from exception.NomeException import NomeException
+from datetime import datetime
+
 
 class TelaAdotante:
     def tela_opcoes(self):
@@ -13,41 +17,42 @@ class TelaAdotante:
         opcao = int(input("Escolha a opcao: "))
         return opcao
 
-    def pega_data_nascimento_adotante(self):
-        data_nascimento = input("Data de nascimento (dia/mes/ano): ")
-        # dia_nascimento = input("Dia de nascimento com dois dígitos: ")
-        # mes_nascimento = input("Mês de nascimento com dois dígitos:: ")
-        # ano_nascimento = input("Ano de nascimento com quatro dígitos: ")
-        # data_nascimento = f"{dia_nascimento}/{mes_nascimento}/{ano_nascimento}"
-        return data_nascimento
-
     def pega_dados_adotante(self):
         print("-------- DADOS ADOTANTE --------")
+
         cpf = input("CPF (XXX.XXX.XXX-XX): ")
-        while not verifica_cpf(cpf):
-            print("CPF inválido, digite novamente.")
+        while True:
+            try:
+                verifica_cpf(cpf)
+                break
+            except CPFException:
+                print("O CPF digitado é inválido. Por favor, digite novamente.")
             cpf = input("CPF (XXX.XXX.XXX-XX): ")
+
         nome = input("Nome completo: ")
-        while not verifica_nome(nome):
-            print("Nome precisa ser completo e não pode conter números.")
+        while True:
+            try:
+                verifica_nome(nome)
+                break
+            except NomeException:
+                print("Nome precisa ser completo e não pode conter números.")
             nome = input("Nome completo: ")
+
+        data_nascimento = input("Data de nascimento: ")
+        while True:
+            try:
+                datetime.strptime(data_nascimento, "%d/%m/%Y")
+                break
+            except ValueError:
+                print("Data de nascimento inválida. Por favor, digite novamente.")
+            data_nascimento = input("Data de nascimento: ")
+
         endereco = input("Endereço: ")
+
         tem_outros_animais = input("Possui outros animais?(S/N) ")
 
         return {
             "cpf": cpf,
-            "nome": nome,
-            "endereco": endereco,
-            "tem_outros_animais": tem_outros_animais,
-        }
-
-    def pega_dados_adotante_alt(self):
-        print("-------- DADOS ADOTANTE --------")
-        nome = input("Nome: ")
-        data_nascimento = self.pega_data_nascimento_adotante()
-        endereco = input("Endereço: ")
-        tem_outros_animais = input("Possui outros animais?(S/N) ")
-        return {
             "nome": nome,
             "data_nascimento": data_nascimento,
             "endereco": endereco,

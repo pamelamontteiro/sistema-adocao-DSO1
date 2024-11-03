@@ -1,9 +1,14 @@
 from telas.tela_sistema import TelaSistema
+from .controlador_adocao import ControladorAdocao
 from .controlador_adotantes import ControladorAdotantes
+from .controlador_cachorros import ControladorCachorros
+from .controlador_doacao import ControladorDoacao
 from .controlador_doador import ControladorDoadores
 from .controlador_gatos import ControladorGatos
 from .controlador_tipo_habitacao import ControladorTipoHabitacao
-from .controlador_adocao import ControladorAdocao
+from .controlador_vacina import ControladorVacinas
+from .controlador_vacinacao import ControladorVacinacao
+from .controlador_relatorios import ControladorRelatorio
 
 
 class ControladorSistema:
@@ -12,9 +17,13 @@ class ControladorSistema:
         self.__controlador_adotantes = ControladorAdotantes(self)
         self.__controlador_doador = ControladorDoadores(self)
         self.__controlador_gatos = ControladorGatos(self)
+        self.__controlador_cachorros = ControladorCachorros(self)
         self.__controlador_tipo_habitacao = ControladorTipoHabitacao(self)
         self.__controlador_adocao = ControladorAdocao(self)
-
+        self.__controlador_doacao = ControladorDoacao(self)
+        self.__controlador_vacinacao = ControladorVacinacao(self)
+        self.__controlador_vacinas = ControladorVacinas(self)
+        self.__controlador_relatorio = ControladorRelatorio(self)
 
     @property
     def controlador_adotantes(self):
@@ -29,8 +38,28 @@ class ControladorSistema:
         return self.__controlador_gatos
 
     @property
+    def controlador_cachorros(self):
+        return self.__controlador_cachorros
+
+    @property
     def controlador_tipo_habitacao(self):
         return self.__controlador_tipo_habitacao
+
+    @property
+    def controlador_vacinas(self):
+        return self.__controlador_vacinas
+
+    @property
+    def controlador_doacao(self):
+        return self.__controlador_doacao
+
+    @property
+    def controlador_adocao(self):
+        return self.__controlador_adocao
+
+    @property
+    def controlador_relatorio(self):
+        return self.__controlador_relatorio
 
     def inicia_sistema(self):
         self.abre_tela()
@@ -47,10 +76,24 @@ class ControladorSistema:
     def cadastra_gatos(self):
         self.__controlador_gatos.abre_tela()
 
-    # 4 - Abre a tela de cadastro de Adocao
+    # 4 - Abre a tela de cadastro de Cachorros
+    def cadastra_cachorros(self):
+        self.__controlador_cachorros.abre_tela()
+
+    # 5 - Abre a tela de cadastro de Adocao
     def cadastra_adocao(self):
         self.__controlador_adocao.abre_tela()
 
+    # 6 - Abre a tela de cadastro de Registros de Doacao
+    def cadastra_doacao(self):
+        self.__controlador_doacao.abre_tela()
+
+    # 7 - Abre a tela de cadastro de Historicos de Vacinacao
+    def cadastra_historicos_vacinacao(self):
+        self.__controlador_vacinacao.abre_tela()
+
+    def exibe_relatorios(self):
+        self.__controlador_relatorio.abre_tela()
 
     # 0 - Encerra o Sistema
     def encerra_sistema(self):
@@ -61,13 +104,17 @@ class ControladorSistema:
             1: self.cadastra_adotantes,
             2: self.cadastra_doador,
             3: self.cadastra_gatos,
-            4: self.cadastra_adocao,
+            4: self.cadastra_cachorros,
+            5: self.cadastra_adocao,
+            6: self.cadastra_doacao,
+            7: self.cadastra_historicos_vacinacao,
+            8: self.exibe_relatorios,
             0: self.encerra_sistema,
         }
 
         while True:
             opcao_escolhida = self.__tela_sistema.tela_opcoes()
-            while opcao_escolhida not in (1, 2, 3, 4, 0):
+            while opcao_escolhida not in (1, 2, 3, 4, 5, 6, 7, 8, 0):
                 self.__tela_sistema.mostra_mensagem(
                     "ERRO: Opção inválida, tente novamente."
                 )

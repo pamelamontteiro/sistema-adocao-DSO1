@@ -1,10 +1,20 @@
 from entidades.animal import Animal
-from entidades.vacinacao import Vacinacao
 
 
 class Cachorro(Animal):
 
-    def __init__(
-        self, numero_chip: str, nome: str, raca: str, tamanho: str, castrado: bool
-    ):
-        super().__init__(numero_chip, nome, raca, tamanho, castrado)
+    def __init__(self, numero_chip: str, nome: str, raca: str, tamanho: str):
+        super().__init__(numero_chip, nome, raca)
+        self.__tamanho = None
+        if isinstance(tamanho, str):
+            self.__tamanho = tamanho
+
+    @property
+    def tamanho(self):
+        return self.__tamanho
+
+    @tamanho.setter
+    def tamanho(self, tamanho: str):
+        self.__tamanho = None
+        if isinstance(tamanho, str):
+            self.__tamanho = tamanho

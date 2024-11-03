@@ -17,13 +17,13 @@ class ControladorAdotantes:
 
     def incluir_adotante(self):
         dados_adotante = self.__tela_adotante.pega_dados_adotante()
-        data_nascimento = self.__tela_adotante.pega_data_nascimento_adotante()
-        data_nascimento = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
         tipo_habitacao = (
             self.__controlador_sistemas.controlador_tipo_habitacao.incluir_tipo_habitacao()
         )
-        cpf_valido = self.pega_adotante_por_cpf(dados_adotante["cpf"])
-        if cpf_valido is None:
+        try:
+            cpf_valido = self.pega_adotante_por_cpf(dados_adotante["cpf"])
+            if cpf_valido is not None:
+                raise Exception
             tem_outros_animais = dados_adotante["tem_outros_animais"].upper()
             if tem_outros_animais == "S" or tem_outros_animais == "N":
                 if tem_outros_animais == "S":
@@ -33,7 +33,7 @@ class ControladorAdotantes:
                 adotante = Adotante(
                     dados_adotante["cpf"],
                     dados_adotante["nome"],
-                    data_nascimento,
+                    datetime.strptime(dados_adotante["data_nascimento"], "%d/%m/%Y"),
                     dados_adotante["endereco"],
                     tem_outros_animais,
                     tipo_habitacao,
@@ -47,7 +47,7 @@ class ControladorAdotantes:
                     "ERRO: Informações inválidas, digite novamente os dados:"
                 )
                 self.__tela_adotante.pega_dados_adotante()  # nao seria necessario um while(?)
-        else:
+        except Exception:
             self.__tela_adotante.mostra_mensagem(
                 "ERRO: O Adotante ja esta cadastrado no Sistema."
             )
@@ -75,10 +75,11 @@ class ControladorAdotantes:
     def alterar_adotante(self):
         self.listar_adotantes()
         cpf_adotante = self.__tela_adotante.seleciona_adotante()
-        adotante = self.pega_adotante_por_cpf(cpf_adotante)
-
-        if adotante is not None:
-            novos_dados_adotante = self.__tela_adotante.pega_dados_adotante_alt()
+        try:
+            adotante = self.pega_adotante_por_cpf(cpf_adotante)
+            if adotante is None:
+                raise Exception
+            novos_dados_adotante = self.__tela_adotante.pega_dados_adotante()
             novo_tipo_habitacao = (
                 self.__controlador_sistemas.controlador_tipo_habitacao.incluir_tipo_habitacao()
             )
@@ -91,15 +92,16 @@ class ControladorAdotantes:
                 "Dados do Adotante alterados com sucesso."
             )
             self.listar_adotantes()
-        else:
+        except Exception:
             self.__tela_adotante.mostra_mensagem("ERRO: O Adotante não existe.")
 
     def excluir_adotante(self):
         self.listar_adotantes()
         cpf_adotante = self.__tela_adotante.seleciona_adotante()
-        adotante = self.pega_adotante_por_cpf(cpf_adotante)
-
-        if adotante is not None:
+        try:
+            adotante = self.pega_adotante_por_cpf(cpf_adotante)
+            if adotante is None:
+                raise Exception
             self.__adotantes.remove(adotante)
             self.__tela_adotante.mostra_mensagem(
                 f"Adotante de cpf: {cpf_adotante} foi excluido do sistema."
@@ -110,7 +112,7 @@ class ControladorAdotantes:
                 )
             else:
                 self.__tela_adotante.tela_opcoes()
-        else:
+        except Exception:
             self.__tela_adotante.mostra_mensagem("ERRO: O Adotante não existe.")
             self.__tela_adotante.tela_opcoes()
 

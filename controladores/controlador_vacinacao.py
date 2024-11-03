@@ -1,82 +1,96 @@
-from entidades.vacinacao import Vacinacao
-from entidades.vacina import Vacina
-from telas.tela_vacinacao import TelaVacinacao
-from controladores.controlador_vacina import ControladorVacina
 from datetime import date
+from uuid import uuid4
+from entidades.vacinacao import Vacinacao
+from telas.tela_vacinacao import TelaVacinacao
+
 
 class ControladorVacinacao:
     def __init__(self, controlador_sistemas):
-        self.__tela_vacinacao = TelaVacinacao()
-        self.__controlador_vacina = ControladorVacina(controlador_sistemas)
         self.__controlador_sistemas = controlador_sistemas
-        self.__vacinacoes = []
+        self.__vacinacao = []
+        self.__tela_vacinacao = TelaVacinacao()
 
     def incluir_vacinacao(self):
-        dados_vacinacao = self.__tela_vacinacao.pega_data_vacinacao()
-        vacina_selecionada = self.__controlador_vacina.selecionar_vacina()
-    
-        if vacina_selecionada is not None:
-            vacinacao = Vacinacao(dados_vacinacao["data_vacinacao"], vacina_selecionada)
-            self.__vacinacoes.append(vacinacao)
-            self.__tela_vacinacao.mostrar_mensagem("Vacinação incluída com sucesso!")
-        else:
-            self.__tela_vacinacao.mostrar_mensagem("Nenhuma vacina selecionada.")
-
-    def alterar_vacinacao(self):
-        if not self.__vacinacoes:
-            self.__tela_vacinacao.mostrar_mensagem("Nenhuma vacinação cadastrada para alterar.")
-            return
-    
-        codigo_vacinacao = self.__tela_vacinacao.seleciona_vacinacao()
-        vacinacao = self.obter_vacinacao_por_codigo(codigo_vacinacao)
-    
-        if vacinacao:
-            nova_data = self.__tela_vacinacao.pega_data_vacinacao()["data_vacinacao"]
-            vacinacao.data_de_vacinacao = nova_data
-            self.__tela_vacinacao.mostrar_mensagem("Data de vacinação alterada com sucesso!")
-            
-            nova_vacina = self.__controlador_vacina.selecionar_vacina()
-            if nova_vacina is not None:
-                vacinacao.vacina = nova_vacina
-                self.__tela_vacinacao.mostrar_mensagem("Vacina alterada com sucesso!")
+        gato_ou_cachorro = self.__tela_vacinacao.seleciona_gato_ou_cachorro()
+        while True:
+            if gato_ou_cachorro not in (1, 2):
+                self.__tela_vacinacao.mostra_mensagem(
+                    "Opção inválida! Selecione 1 ou 2!"
+                )
+                gato_ou_cachorro = self.__tela_vacinacao.seleciona_gato_ou_cachorro()
             else:
-                self.__tela_vacinacao.mostrar_mensagem("Nenhuma vacina selecionada.")
-        else:
-            self.__tela_vacinacao.mostrar_mensagem("Vacinação não encontrada.")
+                break
+        if gato_ou_cachorro == 1:
+            self.__controlador_sistemas.controlador_gatos.listar_gatos()
+            try:
+                dados_vacinacao = self.__tela_vacinacao.pega_dados_historico()
+                vacina = (
+                    self.__controlador_sistemas.controlador_vacinas.incluir_vacina()
+                )
+                gato = self.__controlador_sistemas.controlador_gatos.pega_gato_por_numero_chip(
+                    dados_vacinacao["numero_chip_animal"]
+                )
+
+                if gato is None or vacina is None:
+                    raise Exception
+
+                data_de_vacinacao = date.today()
+                vacinacao = Vacinacao(data_de_vacinacao, vacina)
+                gato.registrar_vacina(data_de_vacinacao, vacina)
+                self.__vacinacao.append(vacinacao)
+            except Exception:
+                self.__tela_vacinacao.mostra_mensagem(
+                    f"Não há nenhum gato cadastrado com numero chip: "
+                    f"{dados_vacinacao['numero_chip_animal']} para vacinar"
+                )
+
+        if gato_ou_cachorro == 2:
+            self.__controlador_sistemas.controlador_cachorros.listar_cachorros()
+            try:
+                dados_vacinacao = self.__tela_vacinacao.pega_dados_historico()
+                vacina = (
+                    self.__controlador_sistemas.controlador_vacinas.incluir_vacina()
+                )
+                cachorro = self.__controlador_sistemas.controlador_cachorros.pega_cachorro_por_numero_chip(
+                    dados_vacinacao["numero_chip_animal"]
+                )
+
+                if cachorro is None or vacina is None:
+                    raise Exception
+
+                data_de_vacinacao = date.today()
+                vacinacao = Vacinacao(data_de_vacinacao, vacina)
+                cachorro.registrar_vacina(data_de_vacinacao, vacina)
+                self.__vacinacao.append(vacinacao)
+            except Exception:
+                self.__tela_vacinacao.mostra_mensagem(
+                    f"Não há nenhum cachorro cadastrado com numero chip: "
+                    f"{dados_vacinacao['numero_chip_animal']} para vacinar"
+                )
 
     def listar_vacinacao(self):
-        if self.__vacinacoes:
-            for vacinacao in self.__vacinacoes:
-                self.__tela_vacinacao.mostra_vacinacao(
+        gatos = self.__controlador_sistemas.controlador_gatos.gatos
+        cachorros = self.__controlador_sistemas.controlador_cachorros.cachorros
+        todas_vacinas = []
+        for gato in gatos:
+            for vacina in gato.vacinacao:
+                todas_vacinas.append(
                     {
-                        "nome_vacina": vacinacao.vacina.nome_vacina,
-                        "codigo_vacinacao": vacinacao.vacina.codigo_vacina,
-                        "data_vacinacao": vacinacao.data_de_vacinacao
+                        "animal": gato.nome,
+                        "data_de_vacinacao": vacina.data_de_vacinacao,
+                        "vacina": vacina.vacina.nome_vacina,
                     }
                 )
-        else:
-            self.__tela_vacinacao.mostrar_mensagem("ERRO: Não existe nenhuma vacinação cadastrada no sistema.")
-            self.__controlador_sistemas.abre_tela()
-    
-    def excluir_vacinacao(self):
-        if not self.__vacinacoes:
-            self.__tela_vacinacao.mostrar_mensagem("Nenhuma vacinação cadastrada para excluir.")
-            return
-        
-        codigo_vacinacao = self.__tela_vacinacao.seleciona_vacinacao()
-        vacinacao = self.obter_vacinacao_por_codigo(codigo_vacinacao)
-        
-        if vacinacao:
-            self.__vacinacoes.remove(vacinacao)
-            self.__tela_vacinacao.mostrar_mensagem("Vacinação excluída com sucesso!")
-        else:
-            self.__tela_vacinacao.mostrar_mensagem("Vacinação não encontrada.")
-
-    def obter_vacinacao_por_codigo(self, codigo):
-        for vacinacao in self.__vacinacoes:
-            if vacinacao.vacina.codigo_vacina == codigo:
-                return vacinacao
-        return None
+        for cachorro in cachorros:
+            for vacina in cachorro.vacinacao:
+                todas_vacinas.append(
+                    {
+                        "animal": cachorro.nome,
+                        "data_de_vacinacao": vacina.data_de_vacinacao,
+                        "vacina": vacina.vacina.nome_vacina,
+                    }
+                )
+        self.__tela_vacinacao.mostra_vacinacao(todas_vacinas)
 
     def retornar(self):
         self.__controlador_sistemas.abre_tela()
@@ -84,16 +98,16 @@ class ControladorVacinacao:
     def abre_tela(self):
         lista_opcoes = {
             1: self.incluir_vacinacao,
-            2: self.alterar_vacinacao,
-            3: self.listar_vacinacao,
-            4: self.excluir_vacinacao,
+            2: self.listar_vacinacao,
             0: self.retornar,
         }
 
         while True:
             opcao_escolhida = self.__tela_vacinacao.tela_opcoes()
-            if opcao_escolhida in lista_opcoes:
-                funcao_escolhida = lista_opcoes[opcao_escolhida]
-                funcao_escolhida()
-            else:
-                self.__tela_vacinacao.mostrar_mensagem("ERRO: Opção inválida, tente novamente.")
+            while opcao_escolhida not in (1, 2, 0):
+                self.__tela_vacinacao.mostra_mensagem(
+                    "ERRO: Opção inválida, tente novamente."
+                )
+                opcao_escolhida = self.__tela_vacinacao.tela_opcoes()
+            funcao_escolhida = lista_opcoes[opcao_escolhida]
+            funcao_escolhida()

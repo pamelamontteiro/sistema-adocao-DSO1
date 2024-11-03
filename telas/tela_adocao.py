@@ -1,4 +1,6 @@
 from datetime import date
+from utils import verifica_cpf
+from exception.CPFException import CPFException
 
 
 class TelaAdocao:
@@ -8,23 +10,29 @@ class TelaAdocao:
         print("1 - Incluir adoção")
         print("2 - Listar adoção")
         print("3 - Excluir adoção")
-        print("4 - Gerar relatório de adoção")
         print("0 - Retornar")
 
         opcao = int(input("Escolha a opcao: "))
         return opcao
 
-    # TODO: tela_cachorro ainda não foi feita, Adicionar a parte do cachorro depois
     def seleciona_gato_ou_cachorro(self):
         print("Um cachorro um gato será adotado?")
         print("1 - Gato")
-        # print("2 - Cachorro")
+        print("2 - Cachorro")
         opcao = int(input("Escolha a opcao: "))
         return opcao
 
     def pega_dados_adocao(self):
         print("-------- DADOS De ADOÇÃO --------")
         cpf_adotante = input("Cpf do adotante: ")
+        while True:
+            try:
+                verifica_cpf(cpf_adotante)
+                break
+            except CPFException:
+                print("O CPF digitado é inválido. Por favor, digite novamente.")
+            cpf_adotante = input("Cpf do adotante: ")
+
         numero_chip_animal = int(input("Numero do chip do animal: "))
         return {"cpf": cpf_adotante, "numero_chip": numero_chip_animal}
 
@@ -48,14 +56,6 @@ class TelaAdocao:
     def pega_assinatura_termo_assinado(self):
         termo_assinado = input("Assinar termo de responsabilidade?(S/N) ")
         return termo_assinado
-
-    def pega_datas_relatorio(self, text):
-        print(f"Digite a {text} do período:")
-        dia = input("Dia: ")
-        mes = input("Mês: ")
-        ano = input("Ano: ")
-        data = date(int(ano), int(mes), int(dia))
-        return data
 
     def mostra_mensagem(self, msg):
         print(msg)

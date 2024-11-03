@@ -1,5 +1,8 @@
-
 from utils import verifica_cpf, verifica_nome
+from exception.CPFException import CPFException
+from exception.NomeException import NomeException
+from datetime import datetime
+
 
 class TelaDoador:
     def tela_opcoes(self):
@@ -7,7 +10,7 @@ class TelaDoador:
         print("Escolha a opcao")
         print("1 - Incluir doador")
         print("2 - Alterar doador")
-        print("3 - Listar doadors")
+        print("3 - Listar doadores")
         print("4 - Excluir doador")
         print("0 - Retornar")
 
@@ -16,15 +19,34 @@ class TelaDoador:
 
     def pega_dados_doador(self):
         print("-------- DADOS DOADOR --------")
+
         cpf = input("CPF (XXX.XXX.XXX-XX): ")
-        while not verifica_cpf(cpf):
-            print("CPF inválido, digite novamente.")
+        while True:
+            try:
+                verifica_cpf(cpf)
+                break
+            except CPFException:
+                print("O CPF digitado é inválido. Por favor, digite novamente.")
             cpf = input("CPF (XXX.XXX.XXX-XX): ")
+
         nome = input("Nome completo: ")
-        while not verifica_nome(nome):
-            print("Nome precisa ser completo e não pode conter números.")
+        while True:
+            try:
+                verifica_nome(nome)
+                break
+            except NomeException:
+                print("Nome precisa ser completo e não pode conter números.")
             nome = input("Nome completo: ")
+
         data_nascimento = input("Data de nascimento: ")
+        while True:
+            try:
+                datetime.strptime(data_nascimento, "%d/%m/%Y")
+                break
+            except ValueError:
+                print("Data de nascimento inválida. Por favor, digite novamente.")
+            data_nascimento = input("Data de nascimento: ")
+
         endereco = input("Endereço: ")
         return {
             "nome": nome,

@@ -1,13 +1,14 @@
 from uuid import uuid4
 from entidades.gato import Gato
 from telas.tela_gatos import TelaGato
+from typing import List
 
 
 class ControladorGatos:
-    __RACAS = ['Siamês', 'Persa', 'Ragdoll', 'Sphynx', 'Vira-lata', 'Munchkin']
+    __RACAS = ["Siamês", "Persa", "Ragdoll", "Sphynx", "Vira-lata", "Munchkin"]
 
     def __init__(self, controlador_sistemas):
-        self.__gatos = []
+        self.__gatos: List[Gato] = []
         self.__tela_gatos = TelaGato()
         self.__controlador_sistemas = controlador_sistemas
 
@@ -29,18 +30,19 @@ class ControladorGatos:
         self.__gatos.append(gato)
         self.__tela_gatos.mostra_mensagem("Animal cadastrado com sucesso no Sistema.")
 
-    def listar_gatos(self):
+    def listar_gatos(self, filtro: List[str] = []):
         tam_lista_gatos = len(self.__gatos)
         if tam_lista_gatos > 0:
             for gato in self.__gatos:
-                self.__tela_gatos.mostra_gato(
-                    {
-                        "numero_chip": gato.numero_chip,
-                        "nome": gato.nome,
-                        "raca": gato.raca,
-                        "vacinacao": gato.listar_vacinacao(),
-                    }
-                )
+                if gato.numero_chip not in filtro:
+                    self.__tela_gatos.mostra_gato(
+                        {
+                            "numero_chip": gato.numero_chip,
+                            "nome": gato.nome,
+                            "raca": gato.raca,
+                            "vacinacao": gato.listar_vacinacao(),
+                        }
+                    )
         else:
             self.__tela_gatos.mostra_mensagem(
                 "ERRO: Não existe nenhum gato cadastrado no sistema."
@@ -50,25 +52,34 @@ class ControladorGatos:
     def alterar_gato(self):
         self.listar_gatos()
         numero_chip = self.__tela_gatos.seleciona_gato()
-        gato = self.pega_gato_por_numero_chip(numero_chip)
+        print(numero_chip)
+        try:
+            gato_para_atualizar = self.pega_gato_por_numero_chip(numero_chip)
+            if gato_para_atualizar is None:
+                raise Exception
 
-        if gato is not None:
-            novos_dados_gato = self.__tela_gatos.pega_dados_gato()
-            gato.nome = novos_dados_gato["nome"]
-            gato.raca = novos_dados_gato["raca"]
-            # numero_chip é fixo (?) resposta: vou considerar q sim
-            # historico_vacinacao só pode ser alterado na sua tela (?)
-            self.listar_gatos()
-        else:
+            novos_dados_gato = self.__tela_gatos.pega_dados_gato(self.__RACAS)
+            gato_para_atualizar.nome = novos_dados_gato["nome"]
+            gato_para_atualizar.raca = novos_dados_gato["raca"]
+            self.__gatos = [
+                gato_para_atualizar if gato.numero_chip == numero_chip else gato
+                for gato in self.__gatos
+            ]
+            self.__tela_gatos.mostra_mensagem(
+                "Dados do cachorro alterados com sucesso."
+            )
+
+        except Exception:
             self.__tela_gatos.mostra_mensagem("ERRO: O gato não existe.")
-            self.__tela_gatos.tela_opcoes()
 
     def excluir_gato(self):
         self.listar_gatos()
         numero_chip = self.__tela_gatos.seleciona_gato()
-        gato = self.pega_gato_por_numero_chip(numero_chip)
+        try:
+            gato = self.pega_gato_por_numero_chip(numero_chip)
+            if gato is None:
+                raise Exception
 
-        if gato is not None:
             self.__gatos.remove(gato)
             self.__tela_gatos.mostra_mensagem(
                 f"O gato de numero chip: {numero_chip} foi excluido do sistema"
@@ -79,9 +90,8 @@ class ControladorGatos:
                 )
             else:
                 self.__tela_gatos.tela_opcoes()
-        else:
+        except Exception:
             self.__tela_gatos.mostra_mensagem("ERRO: O gato não existe.")
-            self.__tela_gatos.tela_opcoes()
 
     def retornar(self):
         self.__controlador_sistemas.abre_tela()

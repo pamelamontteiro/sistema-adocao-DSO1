@@ -27,7 +27,7 @@ class Doacao:
 
     @property
     def id_registro(self):
-        return self.__codigo_registro
+        return self.__id_registro
 
     @property
     def data_de_doacao(self):

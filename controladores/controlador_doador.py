@@ -16,11 +16,12 @@ class ControladorDoadores:
         return None
 
     def incluir_doador(self):
-        dados_doador = self.__tela_doador.pega_dados_doador()
-        cpf_valido = self.pegar_doador_por_cpf(dados_doador["cpf"])
-        if (
-            cpf_valido is None
-        ):  # Se não estiver cadastrado, cria um novo doador e adiciona à lista.
+        try:
+            dados_doador = self.__tela_doador.pega_dados_doador()
+            cpf_valido = self.pegar_doador_por_cpf(dados_doador["cpf"])
+            if cpf_valido is not None:
+                raise Exception
+
             doador = Doador(
                 dados_doador["cpf"],
                 dados_doador["nome"],
@@ -31,10 +32,9 @@ class ControladorDoadores:
             self.__tela_doador.mostra_mensagem(
                 "Doador cadastrado com sucesso no sistema."
             )
-        else:
-            # Se já estiver cadastrado, exibe mensagem de erro.
+        except Exception:
             self.__tela_doador.mostra_mensagem(
-                "ERRO: o Doador ja esta cadastrado no Sistema."
+                "ERRO: O Doador ja esta cadastrado no Sistema."
             )
 
     def listar_doadores(self):
@@ -57,33 +57,39 @@ class ControladorDoadores:
 
     def alterar_doador(self):
         self.listar_doadores()
-        cpf_doador = self.__tela_doador.seleciona_doador()
-        adotante = self.pegar_doador_por_cpf(cpf_doador)
+        try:
+            cpf_doador = self.__tela_doador.seleciona_doador()
+            adotante = self.pegar_doador_por_cpf(cpf_doador)
 
-        if adotante is not None:
+            if adotante is None:
+                raise Exception
+
             novos_dados_adotante = self.__tela_doador.pega_dados_doador()
             adotante.nome = novos_dados_adotante["nome"]
             adotante.cpf = novos_dados_adotante["cpf"]
             adotante.nascimento = novos_dados_adotante["data_nascimento"]
             adotante.endereco = novos_dados_adotante["endereco"]
             self.listar_doadores()
-        else:
+        except Exception:
             # Se o doador não existe, exibe mensagem de erro.
             self.__tela_doador.mostra_mensagem("ERRO: O Adotante não existe.")
 
     def excluir_doador(self):
         self.listar_doadores()
-        cpf_adotante = self.__tela_doador.seleciona_doador()
-        adotante = self.pegar_doador_por_cpf(cpf_adotante)
+        try:
+            cpf_adotante = self.__tela_doador.seleciona_doador()
+            adotante = self.pegar_doador_por_cpf(cpf_adotante)
 
-        if adotante is not None:
+            if adotante is None:
+                raise Exception
+
             # Se o doador existe, remove da lista e confirma a exclusão
             self.__doadores.remove(adotante)
             self.__tela_doador.mostra_mensagem(
                 f"Adotante de cpf: {cpf_adotante} foi excluido do sistema."
             )
             self.listar_doadores()
-        else:
+        except Exception:
             # Se o doador não existe, exibe mensagem de erro.
             self.__tela_doador.mostra_mensagem("ERRO: O Adotante não existe.")
 
